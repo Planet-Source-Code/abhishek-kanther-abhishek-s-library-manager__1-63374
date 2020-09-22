@@ -1,0 +1,57 @@
+Dim con As Connection
+Dim rs As Recordset
+Dim dt As Date
+Dim dt1 As Date
+Dim i As Integer
+
+i = 1
+MSHFlexGrid1.TextMatrix(0, 0) = "Name"
+MSHFlexGrid1.TextMatrix(0, 1) = "Book ID"
+MSHFlexGrid1.TextMatrix(0, 2) = "Book Name"
+MSHFlexGrid1.TextMatrix(0, 3) = "Date Of Returning"
+
+Set con = CreateObject("adodb.connection")
+con.Open "dsn=lib"
+dt = Date
+day2 = Day(Date)
+mon2 = Month(Date)
+year2 = Year(Date)
+
+sql11 = "select * from issue"
+Set rs = New Recordset
+rs.Open sql11, con, adOpenStatic, adLockReadOnly
+
+While Not rs.EOF
+dt1 = rs(5)
+day1 = Day(dt1)
+mon1 = Month(dt1)
+year1 = Year(dt1)
+
+If year2 > year1 Then
+MsgBox "Greater"
+flag1 = True
+ElseIf mon2 > mon1 Then
+MsgBox "Greater"
+flag1 = True
+ElseIf day2 > day1 Then
+MsgBox "Greater"
+flag1 = True
+Else
+MsgBox "smaller"
+flag1 = False
+End If
+
+If flag1 Then
+
+MSHFlexGrid1.TextMatrix(i, 0) = rs(4)
+MSHFlexGrid1.TextMatrix(i, 1) = rs(2)
+MSHFlexGrid1.CellForeColor = vbBlack
+MSHFlexGrid1.TextMatrix(i, 2) = rs(1)
+MSHFlexGrid1.TextMatrix(i, 3) = rs(5)
+MSHFlexGrid1.CellBackColor = vbRed
+i = i + 1
+MSHFlexGrid1.AddItem " ", i
+End If
+
+rs.MoveNext
+Wend
