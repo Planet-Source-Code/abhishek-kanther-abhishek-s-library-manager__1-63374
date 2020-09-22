@@ -1,0 +1,52 @@
+Private Sub Command1_Click()
+
+Dim f, d As String
+
+Dim con As connection
+Dim rs As Recordset
+Set con = CreateObject("adodb.connection")
+con.Open "dsn=lib"
+
+If Option1.Value = True Then
+f = "bookid"
+d = Text1.Text
+ElseIf Option2.Value = True Then
+f = Option2.Caption
+d = Text2.Text
+ElseIf Option3.Value = True Then
+f = Option3.Caption
+d = Text3.Text
+End If
+
+MsgBox f & ":" & d
+sql = "select * from books where " & f & " like '%" & d & "%' "
+MsgBox sql
+Set rs = New Recordset
+rs.Open sql, con, adOpenStatic, adLockReadOnly
+
+MsgBox rs(0) & rs(1) & rs(2) & rs(3)
+
+End Sub
+
+Private Sub Frame1_DragDrop(Source As Control, X As Single, Y As Single)
+
+End Sub
+
+Private Sub Option1_Click()
+Text1.Visible = True
+Text2.Visible = False
+Text3.Visible = False
+End Sub
+
+Private Sub Option2_Click()
+Text1.Visible = False
+Text2.Visible = True
+Text3.Visible = False
+
+End Sub
+
+Private Sub Option3_Click()
+Text1.Visible = False
+Text2.Visible = False
+Text3.Visible = True
+End Sub
